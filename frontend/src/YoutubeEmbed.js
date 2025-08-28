@@ -12,26 +12,23 @@ const YoutubeEmbed = ({
 }) => {
   const [hasError, setHasError] = useState(false);
 
-  // Calculate aspect ratio padding percentage
   const [width, height] = aspectRatio.split(":").map(Number);
   const paddingBottom = `${(height / width) * 100}%`;
 
   if (hasError) {
     return (
-      <div
-        style={{
-          position: "relative",
-          padding: "1rem",
-          background: "#f8d7da",
-          color: "#721c24",
-          border: "1px solid #f5c6cb",
-          borderRadius: "6px",
-          maxWidth: "560px",
-          margin: "1rem auto",
-          fontFamily: "Arial, sans-serif",
-          textAlign: "center",
-        }}
-      >
+      <div style={{
+        position: "relative",
+        padding: "1rem",
+        background: "#f8d7da",
+        color: "#721c24",
+        border: "1px solid #f5c6cb",
+        borderRadius: "6px",
+        maxWidth: "560px",
+        margin: "1rem auto",
+        fontFamily: "Arial, sans-serif",
+        textAlign: "center",
+      }}>
         <strong>⚠️ Oops!</strong> Video failed to load.
       </div>
     );
@@ -52,8 +49,7 @@ const YoutubeEmbed = ({
       }}
     >
       <iframe
-        src={`https://www.youtube.com/embed/${embedId}?autoplay=${autoplay ? 1 : 0
-          }&start=${start}&rel=0`}
+        src={`https://www.youtube.com/embed/${embedId}?autoplay=${autoplay ? 1 : 0}&start=${start}&rel=0`}
         frameBorder="0"
         loading="lazy"
         onError={() => setHasError(true)}
@@ -77,7 +73,7 @@ const YoutubeEmbed = ({
 YoutubeEmbed.propTypes = {
   embedId: PropTypes.string.isRequired,
   title: PropTypes.string,
-  aspectRatio: PropTypes.string, // e.g. "16:9" or "4:3"
+  aspectRatio: PropTypes.string,
   autoplay: PropTypes.bool,
   start: PropTypes.number,
   allowFullscreen: PropTypes.bool,
