@@ -135,7 +135,7 @@ export const coursePlaylist = {
           type: "externalLinksList",
           title: "Toppers Notes",
           content: [
-            { label: "AIR 19", url: "https://youtu.be/GkB4vW16QHI?si=85VeL72YqSBYdBZy" },
+            { label: "AIR 19", url: "https://drive.google.com/file/d/1K7D90yubZV4lNtUV4wsCHWFA0s3xHe4d/view" },
             { label: "AIR 83 | Module I", url: "https://drive.google.com/file/d/1WZoP7Z5sOZmmBeZy8uMNvwmnzdpbaHA0/view" },
             { label: "AIR 83 | Module II", url: "https://drive.google.com/file/d/1JmA_80VQX0AKgHR__ZNc2h4Ogs1a79Op/view" },
           ],

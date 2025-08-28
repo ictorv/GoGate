@@ -89,3 +89,5 @@ app.get("/api/location", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
+
+app.get('/health', (req, res) => res.status(200).send("OK"));
