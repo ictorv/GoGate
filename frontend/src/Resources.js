@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
+import { Link } from "react-router-dom";
 import "./Resources.css";
 
-
 const insightReadmeFiles = {
-  "Calculus & Optimization": process.env.PUBLIC_URL +"/resources/calc.md",
-  AI: process.env.PUBLIC_URL +"/resources/ai.md",
+  "Calculus & Optimization": process.env.PUBLIC_URL + "/resources/calc.md",
+  AI: process.env.PUBLIC_URL + "/resources/ai.md",
 };
-
 
 export default function Resources() {
   const [clickedSection, setClickedSection] = useState(() => localStorage.getItem("clickedSection") || null);
@@ -16,16 +14,13 @@ export default function Resources() {
   const [insightContent, setInsightContent] = useState(null);
   const [loadingReadme, setLoadingReadme] = useState(false);
 
-
-  // On mount, load last opened insight README content
   useEffect(() => {
     const lastInsightKey = localStorage.getItem("insightKey");
     if (lastInsightKey && insightReadmeFiles[lastInsightKey]) {
       showInsight(insightReadmeFiles[lastInsightKey], lastInsightKey);
-      setClickedSection("pyq-insights");
+      setClickedSection("insights");
     }
   }, []);
-
 
   useEffect(() => {
     if (clickedSection) {
@@ -35,7 +30,6 @@ export default function Resources() {
     }
   }, [clickedSection]);
 
-
   useEffect(() => {
     if (pdfUrl) {
       localStorage.setItem("pdfUrl", pdfUrl);
@@ -44,20 +38,15 @@ export default function Resources() {
     }
   }, [pdfUrl]);
 
-
   const pyqLinks = {
-    "PYQ 2024":
-      "https://gate2024.iisc.ac.in/wp-content/uploads/2023/10/DataScienceAISampleQuestionPaper.pdf",
+    "PYQ 2024": "https://gate2024.iisc.ac.in/wp-content/uploads/2023/10/DataScienceAISampleQuestionPaper.pdf",
     "PYQ 2025": "https://gate2025.iitr.ac.in/doc/2025/2025_QP/DA.pdf",
   };
 
-
   const practiceLinks = {
-    "Calculus & Optimization":
-      "https://drive.google.com/file/d/1KIj49guDMlsa4d89zGIozCa-ng6IDCZB/preview",
+    "Calculus & Optimization": "https://drive.google.com/file/d/1KIj49guDMlsa4d89zGIozCa-ng6IDCZB/preview",
     AI: "https://drive.google.com/file/d/1M6TUjlfB1vUgOAU-W4JXH4aVj7ArXSKq/preview",
   };
-
 
   const showPdf = (url) => {
     setPdfUrl(url);
@@ -65,7 +54,6 @@ export default function Resources() {
     setLoadingReadme(false);
     localStorage.removeItem("insightKey");
   };
-
 
   const showInsight = async (readmeUrl, subjectKey) => {
     setPdfUrl(null);
@@ -85,7 +73,6 @@ export default function Resources() {
     }
   };
 
-
   const closeViewer = () => {
     setPdfUrl(null);
     setInsightContent(null);
@@ -94,25 +81,17 @@ export default function Resources() {
     localStorage.removeItem("insightKey");
   };
 
-
   const renderSidebarButtons = () => {
-    const backHomeButton = (
-      <div className="back-home-container">
-        <Link to="/" className="btn side-btn back-home-btn">Back to Home</Link>
-      </div>
-    );
-
     if (!clickedSection) {
       return (
         <>
+          <button className="btn side-btn" onClick={() => setClickedSection("insights")}>Insights</button>
           <button className="btn side-btn" onClick={() => setClickedSection("pyq-questions")}>PYQ Questions</button>
           <button className="btn side-btn" onClick={() => setClickedSection("practice")}>Practice</button>
-          <button className="btn side-btn" onClick={() => setClickedSection("pyq-insights")}>PYQ Insights</button>
-          {backHomeButton}
+          
         </>
       );
     }
-
 
     if (clickedSection === "pyq-questions") {
       return (
@@ -121,11 +100,9 @@ export default function Resources() {
             <button key={label} className="btn side-btn sub-btn" onClick={() => showPdf(url)}>{label}</button>
           )}
           <button className="btn side-btn back-btn" onClick={() => setClickedSection(null)}>{"\u00AB"} Back</button>
-          {backHomeButton}
         </>
       );
     }
-
 
     if (clickedSection === "practice") {
       return (
@@ -134,51 +111,60 @@ export default function Resources() {
             <button key={label} className="btn side-btn sub-btn" onClick={() => showPdf(url)}>{label}</button>
           )}
           <button className="btn side-btn back-btn" onClick={() => setClickedSection(null)}>{"\u00AB"} Back</button>
-          {backHomeButton}
         </>
       );
     }
 
-
-    if (clickedSection === "pyq-insights") {
+    if (clickedSection === "insights") {
       return (
         <>
           {Object.entries(insightReadmeFiles).map(([subject, readmeUrl]) =>
             <button key={subject} className="btn side-btn sub-btn" onClick={() => showInsight(readmeUrl, subject)}>{subject}</button>
           )}
           <button className="btn side-btn back-btn" onClick={() => setClickedSection(null)}>{"\u00AB"} Back</button>
-          {backHomeButton}
         </>
       );
     }
     return null;
   };
 
-
   return (
     <div className="resources-layout">
-      <aside className="sidebar">
-        <h2 className="sidebar-header">Resources</h2>
-        <div className="button-group">{renderSidebarButtons()}</div>
+      <Link to="/" className="home-logo-link" aria-label="Home">
+        <img src={process.env.PUBLIC_URL + "/home.png"} alt="Home" className="home-logo" />
+      </Link>
+
+      <aside className="resources-sidebar">
+        <h2 className="resources-sidebar-header">Resources</h2>
+        <div className="resources-button-group">{renderSidebarButtons()}</div>
       </aside>
-      <main className="pdf-viewer-area">
+
+      <main className="resources-pdf-viewer-area">
         {(pdfUrl || insightContent) ? (
           <>
-            <button onClick={closeViewer} className="btn btn-primary close-pdf-btn">
+            <button onClick={closeViewer} className="resources-close-pdf-btn">
               Close {pdfUrl ? "PDF" : "Insights"}
             </button>
             {pdfUrl ? (
-              <iframe src={pdfUrl} title="PDF Viewer" width="100%" height="90vh" className="pdf-iframe" />
+              <iframe
+                src={pdfUrl}
+                title="PDF Viewer"
+                className="resources-pdf-iframe"
+                width="100%"
+                height="90vh"
+              />
             ) : loadingReadme ? (
               <p>Loading README...</p>
             ) : (
-              <div className="readme-content">
+              <div className="resources-readme-content">
                 <ReactMarkdown>{insightContent}</ReactMarkdown>
               </div>
             )}
           </>
         ) : (
-          <p className="placeholder-text">Select a document or insight topic from the sidebar to view here.</p>
+          <p className="resources-placeholder-text">
+            Select a document or insight topic from the sidebar to view here.
+          </p>
         )}
       </main>
     </div>

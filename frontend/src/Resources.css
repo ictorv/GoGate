@@ -1,12 +1,13 @@
 .resources-layout {
+  position: relative;
   display: flex;
-  min-height: 100vh;
-  background: #f9f9f9;
+  height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f9f9f9;
+  color: #333;
 }
 
-/* Sidebar styles */
-.sidebar {
+.resources-sidebar {
   width: 280px;
   background: #fff;
   padding: 20px;
@@ -15,18 +16,21 @@
   flex-direction: column;
   height: 100vh;
   position: relative;
+  color: #444;
+  box-sizing: border-box;
+  border-right: none;
 }
 
-.sidebar-header {
+.resources-sidebar-header {
   font-size: 1.8rem;
   font-weight: 700;
   margin-bottom: 24px;
   color: #333;
   text-align: center;
+  user-select: none;
 }
 
-/* Button group container grows and scrolls */
-.button-group {
+.resources-button-group {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -34,7 +38,7 @@
   overflow-y: auto;
 }
 
-/* Main sidebar buttons */
+/* Sidebar main buttons */
 .btn.side-btn {
   background-color: #e0e7ff;
   border: none;
@@ -45,75 +49,89 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
   text-align: left;
+  user-select: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;      /* Added */
+  width: 95%;                 /* Keep if preferred */
+  white-space: normal;         /* Changed from nowrap or default */
+  word-break: break-word;      /* To break long words */
 }
 
-.btn.side-btn:hover {
+.btn.side-btn:hover,
+.btn.side-btn:focus {
   background-color: #c7d2fe;
+  outline: none;
 }
 
-/* Sub buttons */
+/* Sub buttons indentation and style */
 .sub-btn {
   margin-left: 20px;
   background-color: #f3f4f6;
   color: #3f3f46;
+  font-weight: 600;
+  padding-left: 30px;
+  box-shadow: none;
+  box-sizing: border-box;     /* Added */
+  white-space: normal;        /* Allow wrapping */
+  word-break: break-word;     /* Break long words */
+  width: auto;                /* Let it size naturally inside sidebar */
+  max-width: 75%;   
 }
 
-.sub-btn:hover {
+.sub-btn:hover,
+.sub-btn:focus {
   background-color: #dee3f9;
+  outline: none;
 }
 
 /* Back button style */
 .back-btn {
   background-color: #c7d2fe;
   color: #4338ca;
-  padding: 8px 12px;
+  padding: 8px 14px;
   border-radius: 6px;
   font-weight: 600;
-}
-
-.back-btn:hover {
-  background-color: #a5b0ff;
-}
-
-/* Sidebar text (if any) */
-.sidebar-text {
-  font-size: 1rem;
-  color: #64748b;
-  padding-left: 12px;
-  font-style: italic;
-}
-
-/* Container to push the Back to Home button to bottom and center it */
-.back-home-container {
-  margin-top: auto; /* push it to the bottom */
-  padding-top: 10px;
-  margin-bottom: 30px;
-  display: flex;
-  justify-content: center;
-}
-
-/* Back to Home button styles remain the same */
-.back-home-btn {
-  background-color: #6b7280;
-  color: white !important;
-  width: 90%;
-  max-width: 240px;
-  text-align: center;
-  padding: 12px 12px;
-  border-radius: 6px;
-  font-weight: 600;
-  margin: 0;
+  cursor: pointer;
+  align-self: flex-start;
+  margin-top: 20px;
+  border: none;
+  box-shadow: none;
   transition: background-color 0.3s ease;
-  text-decoration: none;
-  display: block;
+  box-sizing: border-box;     /* Added */
+  white-space: nowrap;        /* Keep button text on one line */
+  width: auto;                /* Natural width */
+  max-width: 40%;            /* Never overflow the container */
 }
 
-.back-home-btn:hover {
-  background-color: #4b5563;
+.back-btn:hover,
+.back-btn:focus {
+  background-color: #a5b0ff;
+  outline: none;
 }
 
-/* Main PDF viewer area */
-.pdf-viewer-area {
+/* Close PDF button - restored original blue shade */
+.resources-close-pdf-btn {
+  align-self: flex-start;
+  margin-bottom: 12px;
+  padding: 0.7em 1.5em;
+  border-radius: 8px;
+  background-color: #a5b0ff; /* Original blue */
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(74, 144, 226, 0.6);
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+.resources-close-pdf-btn:hover,
+.resources-close-pdf-btn:focus {
+  background-color: #919ad9;
+  outline: none;
+}
+
+.resources-pdf-viewer-area {
   flex-grow: 1;
   padding: 24px;
   background-color: white;
@@ -122,46 +140,51 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
+  box-sizing: border-box;
 }
 
-.placeholder-text {
-  color: #64748b;
-  font-size: 1.2rem;
-  text-align: center;
-  margin-top: 40vh;
-}
-
-/* PDF iframe full width/height inside container */
-.pdf-iframe {
+.resources-pdf-iframe {
   width: 100%;
   height: 90vh;
   border: 1px solid #ddd;
   border-radius: 8px;
+  box-shadow: none;
 }
 
-/* Close PDF button styling */
-.close-pdf-btn {
-  align-self: flex-start;
-  margin-bottom: 12px;
-  padding: 0.7em 1.5em;
-  border-radius: 8px;
-  background-color: #bab4ff;
-  border: none;
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(67, 56, 202, 0.3);
-  transition: background-color 0.3s ease;
-  user-select: none;
-}
-
-.close-pdf-btn:hover {
-  background-color: #928eff;
-}
-
-/* Readme content styling */
-.readme-content {
+.resources-readme-content {
   padding: 1rem;
   height: 90vh;
   overflow-y: auto;
+  background: none;
+  color: #222;
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.resources-placeholder-text {
+  color: #64748b;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-top: 40vh;
+  user-select: none;
+}
+
+.home-logo-link {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.home-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
