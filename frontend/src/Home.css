@@ -53,3 +53,17 @@
   color: #4338ca; /* Indigo-700 */
   text-decoration: underline;
 }
+
+.fixed-resources-btn {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 1000;
+  text-decoration: none;
+  padding: 12px 28px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  /* Uses your .btn and .btn-primary for main styling */
+}
+
