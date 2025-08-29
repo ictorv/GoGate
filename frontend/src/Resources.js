@@ -5,8 +5,8 @@ import "./Resources.css";
 
 
 const insightReadmeFiles = {
-  "Calculus & Optimization": "/resources/calc.md",
-  AI: "/resources/ai.md",
+  "Calculus & Optimization": process.env.PUBLIC_URL +"/resources/calc.md",
+  AI: process.env.PUBLIC_URL +"/resources/ai.md",
 };
 
 
