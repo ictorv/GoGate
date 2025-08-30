@@ -30,6 +30,10 @@
       "src": "/logo192.png",
       "dest": "/logo192.png"
     },
+        {
+      "src": "/home.png",
+      "dest": "/home.png"
+    },
     {
       "src": "/logo512.png",
       "dest": "/logo512.png"

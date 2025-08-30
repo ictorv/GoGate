@@ -5,10 +5,14 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: #f9f9f9;
   color: #333;
+  overflow: hidden; /* Prevents unwanted layout shifts */
 }
 
 .resources-sidebar {
-  width: 280px;
+  width: 280px;           /* Fixed width */
+  min-width: 280px;       /* Lock min width */
+  max-width: 280px;       /* Lock max width */
+  flex-shrink: 0;         /* 🚀 Prevent shrinking */
   background: #fff;
   padding: 20px;
   box-shadow: 2px 0 8px rgba(0,0,0,0.1);
@@ -51,10 +55,10 @@
   text-align: left;
   user-select: none;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;      /* Added */
-  width: 95%;                 /* Keep if preferred */
-  white-space: normal;         /* Changed from nowrap or default */
-  word-break: break-word;      /* To break long words */
+  box-sizing: border-box;
+  width: 95%;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .btn.side-btn:hover,
@@ -71,11 +75,11 @@
   font-weight: 600;
   padding-left: 30px;
   box-shadow: none;
-  box-sizing: border-box;     /* Added */
-  white-space: normal;        /* Allow wrapping */
-  word-break: break-word;     /* Break long words */
-  width: auto;                /* Let it size naturally inside sidebar */
-  max-width: 75%;   
+  box-sizing: border-box;
+  white-space: normal;
+  word-break: break-word;
+  width: auto;
+  max-width: 75%;
 }
 
 .sub-btn:hover,
@@ -97,10 +101,10 @@
   border: none;
   box-shadow: none;
   transition: background-color 0.3s ease;
-  box-sizing: border-box;     /* Added */
-  white-space: nowrap;        /* Keep button text on one line */
-  width: auto;                /* Natural width */
-  max-width: 40%;            /* Never overflow the container */
+  box-sizing: border-box;
+  white-space: nowrap;
+  width: auto;
+  max-width: 40%;
 }
 
 .back-btn:hover,
@@ -109,13 +113,13 @@
   outline: none;
 }
 
-/* Close PDF button - restored original blue shade */
+/* Close PDF button */
 .resources-close-pdf-btn {
   align-self: flex-start;
   margin-bottom: 12px;
   padding: 0.7em 1.5em;
   border-radius: 8px;
-  background-color: #a5b0ff; /* Original blue */
+  background-color: #a5b0ff;
   border: none;
   color: white;
   font-weight: 600;
@@ -133,15 +137,18 @@
 
 .resources-pdf-viewer-area {
   flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 0; /* Prevents flexbox overflow issues */
   padding: 24px;
   background-color: white;
   box-shadow: inset 0 0 6px #eee;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   position: relative;
   box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .resources-pdf-iframe {
@@ -162,6 +169,20 @@
   box-shadow: none;
   font-size: 1rem;
   line-height: 1.6;
+}
+
+/* Make tables scroll instead of breaking layout */
+.resources-readme-content table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
+.resources-readme-content th,
+.resources-readme-content td {
+  border: 1px solid #ddd;
+  padding: 8px;
 }
 
 .resources-placeholder-text {

@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { Link } from "react-router-dom";
+import remarkGfm from "remark-gfm";
 import "./Resources.css";
 
 const insightReadmeFiles = {
-  "Calculus & Optimization": process.env.PUBLIC_URL + "/resources/calc.md",
-  AI: process.env.PUBLIC_URL + "/resources/ai.md",
+  "Calculus & Optimization": process.env.PUBLIC_URL + "/resources/insight/calc.md",
+  AI: process.env.PUBLIC_URL + "/resources/insight/ai.md",
+};
+
+// 🔹 Change syllabus to PDFs instead of .md
+const syllabusPdfFiles = {
+  "GATE 2026 Syllabus": "https://gate2026.iitg.ac.in/doc/GATE2026_Syllabus/DA_2026_Syllabus.pdf",
+  "GATE 2025 Syllabus": "https://gate2025.iitr.ac.in/doc/2025/GATE%20_DA_2025_Syllabus.pdf",
+  "GATE 2024 Syllabus":"https://gate2024.iisc.ac.in/wp-content/uploads/2023/08/GATE2024DataScienceAIsyllabus.pdf",
 };
 
 export default function Resources() {
@@ -16,9 +24,14 @@ export default function Resources() {
 
   useEffect(() => {
     const lastInsightKey = localStorage.getItem("insightKey");
+    const lastSyllabusKey = localStorage.getItem("syllabusKey");
+
     if (lastInsightKey && insightReadmeFiles[lastInsightKey]) {
-      showInsight(insightReadmeFiles[lastInsightKey], lastInsightKey);
+      showInsight(insightReadmeFiles[lastInsightKey], lastInsightKey, "insightKey");
       setClickedSection("insights");
+    } else if (lastSyllabusKey && syllabusPdfFiles[lastSyllabusKey]) {
+      showPdf(syllabusPdfFiles[lastSyllabusKey]);
+      setClickedSection("syllabus");
     }
   }, []);
 
@@ -39,13 +52,14 @@ export default function Resources() {
   }, [pdfUrl]);
 
   const pyqLinks = {
-    "PYQ 2024": "https://gate2024.iisc.ac.in/wp-content/uploads/2023/10/DataScienceAISampleQuestionPaper.pdf",
     "PYQ 2025": "https://gate2025.iitr.ac.in/doc/2025/2025_QP/DA.pdf",
+    "PYQ 2024": "https://gate2025.iitr.ac.in/doc/download/2024/DA24S1.pdf",
+    
   };
 
   const practiceLinks = {
-    "Calculus & Optimization": "https://drive.google.com/file/d/1KIj49guDMlsa4d89zGIozCa-ng6IDCZB/preview",
-    AI: "https://drive.google.com/file/d/1M6TUjlfB1vUgOAU-W4JXH4aVj7ArXSKq/preview",
+    "Calculus & Optimization": process.env.PUBLIC_URL +"/resources/practice/calc.pdf",
+    "AI": process.env.PUBLIC_URL +"/resources/practice/ai.pdf",
   };
 
   const showPdf = (url) => {
@@ -53,9 +67,10 @@ export default function Resources() {
     setInsightContent(null);
     setLoadingReadme(false);
     localStorage.removeItem("insightKey");
+    localStorage.removeItem("syllabusKey");
   };
 
-  const showInsight = async (readmeUrl, subjectKey) => {
+  const showInsight = async (readmeUrl, key, storageKey = "insightKey") => {
     setPdfUrl(null);
     setLoadingReadme(true);
     setInsightContent(null);
@@ -64,10 +79,10 @@ export default function Resources() {
       if (!response.ok) throw new Error("Failed to load README file");
       const text = await response.text();
       setInsightContent(text);
-      localStorage.setItem("insightKey", subjectKey);
+      localStorage.setItem(storageKey, key);
     } catch {
       setInsightContent("# Error loading README file.");
-      localStorage.removeItem("insightKey");
+      localStorage.removeItem(storageKey);
     } finally {
       setLoadingReadme(false);
     }
@@ -79,6 +94,7 @@ export default function Resources() {
     setLoadingReadme(false);
     localStorage.removeItem("pdfUrl");
     localStorage.removeItem("insightKey");
+    localStorage.removeItem("syllabusKey");
   };
 
   const renderSidebarButtons = () => {
@@ -86,9 +102,9 @@ export default function Resources() {
       return (
         <>
           <button className="btn side-btn" onClick={() => setClickedSection("insights")}>Insights</button>
+          <button className="btn side-btn" onClick={() => setClickedSection("syllabus")}>Syllabus</button>
           <button className="btn side-btn" onClick={() => setClickedSection("pyq-questions")}>PYQ Questions</button>
           <button className="btn side-btn" onClick={() => setClickedSection("practice")}>Practice</button>
-          
         </>
       );
     }
@@ -119,12 +135,24 @@ export default function Resources() {
       return (
         <>
           {Object.entries(insightReadmeFiles).map(([subject, readmeUrl]) =>
-            <button key={subject} className="btn side-btn sub-btn" onClick={() => showInsight(readmeUrl, subject)}>{subject}</button>
+            <button key={subject} className="btn side-btn sub-btn" onClick={() => showInsight(readmeUrl, subject, "insightKey")}>{subject}</button>
           )}
           <button className="btn side-btn back-btn" onClick={() => setClickedSection(null)}>{"\u00AB"} Back</button>
         </>
       );
     }
+
+    if (clickedSection === "syllabus") {
+      return (
+        <>
+          {Object.entries(syllabusPdfFiles).map(([subject, pdfUrl]) =>
+            <button key={subject} className="btn side-btn sub-btn" onClick={() => showPdf(pdfUrl)}>{subject}</button>
+          )}
+          <button className="btn side-btn back-btn" onClick={() => setClickedSection(null)}>{"\u00AB"} Back</button>
+        </>
+      );
+    }
+
     return null;
   };
 
@@ -143,7 +171,7 @@ export default function Resources() {
         {(pdfUrl || insightContent) ? (
           <>
             <button onClick={closeViewer} className="resources-close-pdf-btn">
-              Close {pdfUrl ? "PDF" : "Insights"}
+              Close {pdfUrl ? "PDF" : "Content"}
             </button>
             {pdfUrl ? (
               <iframe
@@ -157,7 +185,9 @@ export default function Resources() {
               <p>Loading README...</p>
             ) : (
               <div className="resources-readme-content">
-                <ReactMarkdown>{insightContent}</ReactMarkdown>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {insightContent}
+                </ReactMarkdown>
               </div>
             )}
           </>
